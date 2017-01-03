@@ -43,7 +43,7 @@ public class TestHomeDeliverySignup {
 		//capabilities.setCapability("openDeviceTimeout", 5);
 
 		switch (targetEnvironment) {
-		case "Galaxy S6":
+		case "Galaxy S7":
 			device = true;
 			capabilities.setCapability("platformName", "Android");
 			capabilities.setCapability("deviceName", "E0CF1F7B");
@@ -198,14 +198,14 @@ public class TestHomeDeliverySignup {
 		sleep(1000);
 		System.out.println("### Entering subscription details ###");
 		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='txtDeliveryFirstName']")));
-		driver.findElement(By.xpath("//input[@id='txtDeliveryFirstName']")).sendKeys("Patrick");
-		driver.findElement(By.xpath("//input[@id='txtDeliveryLastName']")).sendKeys("McCartney");
+		driver.findElement(By.xpath("//input[@id='txtDeliveryFirstName']")).sendKeys("Tomer");
+		driver.findElement(By.xpath("//input[@id='txtDeliveryLastName']")).sendKeys("Golani");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryAddress1']")).sendKeys("28 Main St");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryAddress2']")).sendKeys("Apt. 2");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryAreaCode']")).sendKeys("781");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryPhone3']")).sendKeys("847");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryPhone4']")).sendKeys("4433");
-		driver.findElement(By.xpath("//input[@id='txtDeliveryEMail']")).sendKeys("patrickm@perfectomobile.com");
+		driver.findElement(By.xpath("//input[@id='txtDeliveryEMail']")).sendKeys("tomerg@perfectomobile.com");
 		takeScreenshot();
 		
 	}
