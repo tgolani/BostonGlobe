@@ -46,14 +46,14 @@ public class TestHomeDeliverySignup {
 		case "Galaxy S6":
 			device = true;
 			capabilities.setCapability("platformName", "Android");
-			capabilities.setCapability("deviceName", "05157DF532C1D40F");
+			capabilities.setCapability("deviceName", "E0CF1F7B");
 			capabilities.setCapability("browserName", "mobileChrome");
 			break;
 
 		case "iPhone 6":
 			device = true;
 			capabilities.setCapability("platformName", "iOS");
-			capabilities.setCapability("deviceName", "030FB4BA028AFB24D4800B3715516A680E022C5D");
+			capabilities.setCapability("deviceName", "6D0250B1CECE7730CE322AD9CD7209665AB909BB");
 			capabilities.setCapability("browserName", "mobileSafari");
 			break;
 
