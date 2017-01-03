@@ -66,14 +66,14 @@
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
 	</test>
-<!-- 
+
 	<test name="Sign up for home delivery - Chrome Beta">
 		<parameter name="targetEnvironment" value="Chrome Beta" />
 		<classes>
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
 	</test>
---> 
+
 <!--  
 <test name="Sign up for home delivery - IE 11 - 172"><parameter name="targetEnvironment" value="Internet Explorer 11" /><classes><class name="test.java.TestHomeDeliverySignup" /></classes></test>
 <test name="Sign up for home delivery - Chrome 48 - 344"><parameter name="targetEnvironment" value="Chrome 48" /><classes><class name="test.java.TestHomeDeliverySignup" /></classes></test>
