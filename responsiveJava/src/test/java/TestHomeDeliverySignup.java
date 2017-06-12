@@ -359,7 +359,7 @@ public class TestHomeDeliverySignup {
 		
 		PerfectoExecutionContext perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
 				.withProject(new Project("Boston Globe", "1.0")) // Optional
-				.withContextTags("Build " + System.getProperty("BuildNumber"), "Software Version: 1.6", "Responsive Build Validation", "patrickm") // Optional
+				.withContextTags("Build " + System.getProperty("BuildNumber"), "Software Version: 1.6", "Responsive Build Validation", "Tomer") // Optional
 				.withWebDriver(driver).build();
 
 		return new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
