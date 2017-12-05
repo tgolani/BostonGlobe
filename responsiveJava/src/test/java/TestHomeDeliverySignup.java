@@ -115,7 +115,7 @@ public class TestHomeDeliverySignup {
 			device = false;
 			fast = false;
 			capabilities.setCapability("platformName", "Windows");
-			capabilities.setCapability("platformVersion", "XP");
+			capabilities.setCapability("platformVersion", "7");
 			capabilities.setCapability("browserName", "Chrome");
 			capabilities.setCapability("browserVersion", "48");
 			capabilities.setCapability("resolution", "1366x768");
