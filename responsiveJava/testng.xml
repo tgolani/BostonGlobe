@@ -25,15 +25,15 @@
 		</classes>
 	</test>
 
-	<test name="Sign up for home delivery - Chrome 56 Fast 1">
-		<parameter name="targetEnvironment" value="Chrome 56 Fast" />
+	<test name="Sign up for home delivery - Chrome 69 Fast 1">
+		<parameter name="targetEnvironment" value="Chrome 69 Fast" />
 		<classes>
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
 	</test>
 
-	<test name="Sign up for home delivery - Chrome 56 Fast 2">
-		<parameter name="targetEnvironment" value="Chrome 56 Fast" />
+	<test name="Sign up for home delivery - Chrome 69 Fast 2">
+		<parameter name="targetEnvironment" value="Chrome 69 Fast" />
 		<classes>
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
@@ -96,21 +96,21 @@
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
 	</test>
-	<test name="Sign up for home delivery - FF 43">
-		<parameter name="targetEnvironment" value="Firefox 43" />
+	<test name="Sign up for home delivery - FF 62">
+		<parameter name="targetEnvironment" value="Firefox 62" />
 		<classes>
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
 	</test>
-	<test name="Sign up for home delivery - FF 49">
-		<parameter name="targetEnvironment" value="Firefox 49" />
+	<test name="Sign up for home delivery - FF 61">
+		<parameter name="targetEnvironment" value="Firefox 61" />
 		<classes>
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
 	</test>
 
-	<test name="Sign up for home delivery - Chrome 48">
-		<parameter name="targetEnvironment" value="Chrome 48" />
+	<test name="Sign up for home delivery - Chrome 58">
+		<parameter name="targetEnvironment" value="Chrome 58" />
 		<classes>
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
