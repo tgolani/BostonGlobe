@@ -8,9 +8,9 @@
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
 	</test>
-
-	<test name="Sign up for home delivery - Galaxy S6">
-		<parameter name="targetEnvironment" value="Galaxy S6" />
+-->
+	<test name="Sign up for home delivery - Galaxy S7">
+		<parameter name="targetEnvironment" value="Galaxy S7" />
 		<classes>
 			<class name="test.java.TestHomeDeliverySignup" />
 		</classes>
@@ -23,7 +23,7 @@
 		</classes>
 	</test>
 
--->
+
 
 	<test name="Sign up for home delivery - Chrome Latest">
 		<parameter name="targetEnvironment" value="Chrome Latest" />
