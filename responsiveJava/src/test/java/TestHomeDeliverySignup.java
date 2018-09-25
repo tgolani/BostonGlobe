@@ -193,7 +193,12 @@ public class TestHomeDeliverySignup {
 
 		capabilities.setCapability("user", System.getProperty("PerfectoUsername"));
 		capabilities.setCapability("password", System.getProperty("PerfectoPassword"));		
-		if(fast) { capabilities.setCapability("offline-token", System.getProperty("PerfectoToken"));}
+		if(fast) { 
+			//capabilities.setCapability("offline-token", System.getProperty("PerfectoToken"));
+			capabilities.setCapability("securityToken", System.getProperty("PerfectoToken"));
+			//capabilities.setCapability("securityToken", "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzbFV4OFFBdjdVellIajd4YWstR0tTbE43UjFNSllDbC1TRVJiTlU1RFlFIn0.eyJqdGkiOiJlNWQ4MTI2Ny1mOTZhLTQ3NWUtYTNiYi04MDY0NmIwNGY5MmUiLCJleHAiOjAsIm5iZiI6MCwiaWF0IjoxNTMzODQ2OTc3LCJpc3MiOiJodHRwczovL2F1dGgucGVyZmVjdG9tb2JpbGUuY29tL2F1dGgvcmVhbG1zL2RlbW8tcGVyZmVjdG9tb2JpbGUtY29tIiwiYXVkIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJzdWIiOiI2NDAwZjJjNS1hMTE1LTQ5ZDQtOGNlMy0yOGNjMDZiNzVkN2EiLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJub25jZSI6ImVkYjZlNzE3LWNhNjMtNDU4OS1iOWUzLWE4YTgyMTk1OGI2NyIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6ImQ0NzZjNTA2LTllNzYtNDQyMi1iMjE5LTQ0NTQzNDIzNDE4ZCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fX0.kFjPkNfbiot592lK5E43S_VqIyDmP-hKnKVbJAI6QSGoo8DgLVcG-9MUlokrdo90V6Zdqt60Lsa_h9fa97W9LgYFpSy7frcu3LKAl1otunfZz0YXSn1hxn-_jm71kaoMIlToTjeAULACCi7-nsoptYvb4l5i0Kf-jg4N3EVC5ZwyeBNpm9LsKMfOlxcp8Pz_b_hnNzb3sWijtphUthZfa-wwhR4tdZ0OLXG1gbBDk3d5Y52qk8qEnjobj5vI6kOwsSwUNkocP8A2Gy9J9ncQogitUcCZG9jh-eEUXs4tlYZn-DKetrTQpX5ycv-1DFI5gKV6gcibO-dn53d1VIMGyw");
+
+		}
 		capabilities.setCapability("newCommandTimeout", "30");
 		if (device) { capabilities.setCapability("windTunnelPersona", "Georgia"); }
 		//	if (device) { capabilities.setCapability("windTunnelPersona", "Ross"); }
