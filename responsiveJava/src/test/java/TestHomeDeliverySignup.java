@@ -373,14 +373,14 @@ public class TestHomeDeliverySignup {
 		sleep(1000);
 		//System.out.println("### Entering subscription details ###");
 		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='txtDeliveryFirstName']")));
-		driver.findElement(By.xpath("//input[@id='txtDeliveryFirstName']")).sendKeys("Patrick");
-		driver.findElement(By.xpath("//input[@id='txtDeliveryLastName']")).sendKeys("McCartney");
+		driver.findElement(By.xpath("//input[@id='txtDeliveryFirstName']")).sendKeys("Tomer");
+		driver.findElement(By.xpath("//input[@id='txtDeliveryLastName']")).sendKeys("Golani");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryAddress1']")).sendKeys("28 Main St");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryAddress2']")).sendKeys("Apt. 2");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryAreaCode']")).sendKeys("781");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryPhone3']")).sendKeys("847");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryPhone4']")).sendKeys("4433");
-		driver.findElement(By.xpath("//input[@id='txtDeliveryEMail']")).sendKeys("patrickm@perfectomobile.com");
+		driver.findElement(By.xpath("//input[@id='txtDeliveryEMail']")).sendKeys("tomer@perfecto.com");
 		takeScreenshot();
 		
 		
