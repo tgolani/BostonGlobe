@@ -51,7 +51,7 @@ public class TestHomeDeliverySignup {
 			device = true;
 			fast = false;
 			capabilities.setCapability("platformName", "Android");
-			capabilities.setCapability("deviceName", "E0CF1F7B");
+			capabilities.setCapability("deviceName", "5A188524");
 			capabilities.setCapability("browserName", "mobileChrome");
 			break;
 
@@ -63,13 +63,13 @@ public class TestHomeDeliverySignup {
 			capabilities.setCapability("browserName", "mobileSafari");
 			break;
 		
-		case "Chrome 56 Fast":
+		case "Chrome 69 Fast":
 			device = false;
 			fast = true;
 			capabilities.setCapability("platformName", "Windows");
 			capabilities.setCapability("platformVersion", "10");
 			capabilities.setCapability("browserName", "Chrome");
-			capabilities.setCapability("browserVersion", "56");
+			capabilities.setCapability("browserVersion", "69");
 			capabilities.setCapability("resolution", "1280x1024");
 			capabilities.setCapability("location", "US East");
 			capabilities.setCapability("deviceType", "WEB");
@@ -77,7 +77,7 @@ public class TestHomeDeliverySignup {
 
 		case "Internet Explorer 11":
 			device = false;
-			fast = false;
+			fast = true;
 			capabilities.setCapability("platformName", "Windows");
 			capabilities.setCapability("platformVersion", "8.1");
 			capabilities.setCapability("browserName", "Internet Explorer");
@@ -87,37 +87,37 @@ public class TestHomeDeliverySignup {
 			capabilities.setCapability("deviceType", "WEB");
 			break;
 
-		case "Firefox 43":
+		case "Firefox 62":
 			device = false;
-			fast = false;
+			fast = true;
 			capabilities.setCapability("platformName", "Windows");
 			capabilities.setCapability("platformVersion", "8.1");
 			capabilities.setCapability("browserName", "Firefox");
-			capabilities.setCapability("browserVersion", "43");
+			capabilities.setCapability("browserVersion", "62");
 			capabilities.setCapability("resolution", "1366x768");
 			capabilities.setCapability("location", "US East");
 			capabilities.setCapability("deviceType", "WEB");
 			break;
 
-		case "Firefox 49":
+		case "Firefox 61":
 			device = false;
 			fast = true;
 			capabilities.setCapability("platformName", "Windows");
 			capabilities.setCapability("platformVersion", "7");
 			capabilities.setCapability("browserName", "Firefox");
-			capabilities.setCapability("browserVersion", "49");
+			capabilities.setCapability("browserVersion", "61");
 			capabilities.setCapability("resolution", "1280x1024");
 			capabilities.setCapability("location", "US East");
 			capabilities.setCapability("deviceType", "WEB");
 			break;
 
-		case "Chrome 48":
+		case "Chrome 58":
 			device = false;
-			fast = false;
+			fast = true;
 			capabilities.setCapability("platformName", "Windows");
 			capabilities.setCapability("platformVersion", "7");
 			capabilities.setCapability("browserName", "Chrome");
-			capabilities.setCapability("browserVersion", "48");
+			capabilities.setCapability("browserVersion", "58");
 			capabilities.setCapability("resolution", "1366x768");
 			capabilities.setCapability("location", "US East");
 			capabilities.setCapability("deviceType", "WEB");
