@@ -1,5 +1,7 @@
 package test.java;
 
+import com.perfecto.reportium.model.Job;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
@@ -18,10 +20,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import ru.yandex.qatools.allure.annotations.Attachment;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,6 +46,7 @@ public class TestHomeDeliverySignup {
 	String OS;
 	int retry = 1; //number of times to retry
 	int retryInterval = 5000; //retry in MS
+	Exception ex = null;
 
 	public RemoteWebDriver createDriver(String targetEnvironment) throws MalformedURLException {
 		DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -62,41 +69,49 @@ public class TestHomeDeliverySignup {
 			capabilities.setCapability("deviceName", "6D0250B1CECE7730CE322AD9CD7209665AB909BB");
 			capabilities.setCapability("browserName", "mobileSafari");
 			break;
-		
-		case "Chrome 69 Fast":
+
+		case "Chrome 68":
 			device = false;
 			fast = true;
 			capabilities.setCapability("platformName", "Windows");
 			capabilities.setCapability("platformVersion", "10");
 			capabilities.setCapability("browserName", "Chrome");
-			capabilities.setCapability("browserVersion", "69");
+			capabilities.setCapability("browserVersion", "68");
 			capabilities.setCapability("resolution", "1280x1024");
 			capabilities.setCapability("location", "US East");
-			capabilities.setCapability("deviceType", "WEB");
 			break;
+			
+		case "Chrome 62":
+			device = false;
+			fast = true;
+			capabilities.setCapability("platformName", "Windows");
+			capabilities.setCapability("platformVersion", "10");
+			capabilities.setCapability("browserName", "Chrome");
+			capabilities.setCapability("browserVersion", "62");
+			capabilities.setCapability("resolution", "1280x1024");
+			capabilities.setCapability("location", "US East");
+			break;	
 
 		case "Internet Explorer 11":
 			device = false;
 			fast = true;
 			capabilities.setCapability("platformName", "Windows");
-			capabilities.setCapability("platformVersion", "8.1");
+			capabilities.setCapability("platformVersion", "10");
 			capabilities.setCapability("browserName", "Internet Explorer");
 			capabilities.setCapability("browserVersion", "11");
 			capabilities.setCapability("resolution", "1366x768");
 			capabilities.setCapability("location", "US East");
-			capabilities.setCapability("deviceType", "WEB");
 			break;
 
-		case "Firefox 62":
+		case "Firefox 54":
 			device = false;
 			fast = true;
 			capabilities.setCapability("platformName", "Windows");
 			capabilities.setCapability("platformVersion", "8.1");
 			capabilities.setCapability("browserName", "Firefox");
-			capabilities.setCapability("browserVersion", "62");
+			capabilities.setCapability("browserVersion", "54");
 			capabilities.setCapability("resolution", "1366x768");
 			capabilities.setCapability("location", "US East");
-			capabilities.setCapability("deviceType", "WEB");
 			break;
 
 		case "Firefox 61":
@@ -108,19 +123,17 @@ public class TestHomeDeliverySignup {
 			capabilities.setCapability("browserVersion", "61");
 			capabilities.setCapability("resolution", "1280x1024");
 			capabilities.setCapability("location", "US East");
-			capabilities.setCapability("deviceType", "WEB");
 			break;
 
-		case "Chrome 58":
+		case "Chrome 48":
 			device = false;
-			fast = true;
+			fast = false;
 			capabilities.setCapability("platformName", "Windows");
-			capabilities.setCapability("platformVersion", "7");
+			capabilities.setCapability("platformVersion", "XP");
 			capabilities.setCapability("browserName", "Chrome");
-			capabilities.setCapability("browserVersion", "58");
+			capabilities.setCapability("browserVersion", "48");
 			capabilities.setCapability("resolution", "1366x768");
 			capabilities.setCapability("location", "US East");
-			capabilities.setCapability("deviceType", "WEB");
 			break;
 		
 		case "Chrome Beta":
@@ -132,7 +145,6 @@ public class TestHomeDeliverySignup {
 			capabilities.setCapability("browserVersion", "beta");
 			capabilities.setCapability("resolution", "1280x1024");
 			capabilities.setCapability("location", "US East");
-			capabilities.setCapability("deviceType", "WEB");
 			break;
 		case "Safari 10 Sierra":
 			device = false;
@@ -188,25 +200,43 @@ public class TestHomeDeliverySignup {
 			capabilities.setCapability("resolution", "1280x1024");
 			capabilities.setCapability("location", "US East");
 			break;
+		case "Edge 16":
+			device = false;
+			fast = true;
+			capabilities.setCapability("platformName", "Windows");
+			capabilities.setCapability("platformVersion", "10");
+			capabilities.setCapability("browserName", "Edge");
+			capabilities.setCapability("browserVersion", "16");
+			capabilities.setCapability("resolution", "1600x1200");
+			capabilities.setCapability("location", "US East");
+			break;
 			
 		}
 
 		capabilities.setCapability("user", System.getProperty("PerfectoUsername"));
-		//capabilities.setCapability("password", System.getProperty("PerfectoPassword"));	
+		//capabilities.setCapability("password", System.getProperty("PerfectoPassword"));
 		capabilities.setCapability("securityToken", "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzbFV4OFFBdjdVellIajd4YWstR0tTbE43UjFNSllDbC1TRVJiTlU1RFlFIn0.eyJqdGkiOiJlNWQ4MTI2Ny1mOTZhLTQ3NWUtYTNiYi04MDY0NmIwNGY5MmUiLCJleHAiOjAsIm5iZiI6MCwiaWF0IjoxNTMzODQ2OTc3LCJpc3MiOiJodHRwczovL2F1dGgucGVyZmVjdG9tb2JpbGUuY29tL2F1dGgvcmVhbG1zL2RlbW8tcGVyZmVjdG9tb2JpbGUtY29tIiwiYXVkIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJzdWIiOiI2NDAwZjJjNS1hMTE1LTQ5ZDQtOGNlMy0yOGNjMDZiNzVkN2EiLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJub25jZSI6ImVkYjZlNzE3LWNhNjMtNDU4OS1iOWUzLWE4YTgyMTk1OGI2NyIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6ImQ0NzZjNTA2LTllNzYtNDQyMi1iMjE5LTQ0NTQzNDIzNDE4ZCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fX0.kFjPkNfbiot592lK5E43S_VqIyDmP-hKnKVbJAI6QSGoo8DgLVcG-9MUlokrdo90V6Zdqt60Lsa_h9fa97W9LgYFpSy7frcu3LKAl1otunfZz0YXSn1hxn-_jm71kaoMIlToTjeAULACCi7-nsoptYvb4l5i0Kf-jg4N3EVC5ZwyeBNpm9LsKMfOlxcp8Pz_b_hnNzb3sWijtphUthZfa-wwhR4tdZ0OLXG1gbBDk3d5Y52qk8qEnjobj5vI6kOwsSwUNkocP8A2Gy9J9ncQogitUcCZG9jh-eEUXs4tlYZn-DKetrTQpX5ycv-1DFI5gKV6gcibO-dn53d1VIMGyw");
 
-		if(fast) { 
-			//capabilities.setCapability("offline-token", System.getProperty("PerfectoToken"));
-			//capabilities.setCapability("securityToken", System.getProperty("PerfectoToken"));
-			//capabilities.setCapability("securityToken", "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzbFV4OFFBdjdVellIajd4YWstR0tTbE43UjFNSllDbC1TRVJiTlU1RFlFIn0.eyJqdGkiOiJlNWQ4MTI2Ny1mOTZhLTQ3NWUtYTNiYi04MDY0NmIwNGY5MmUiLCJleHAiOjAsIm5iZiI6MCwiaWF0IjoxNTMzODQ2OTc3LCJpc3MiOiJodHRwczovL2F1dGgucGVyZmVjdG9tb2JpbGUuY29tL2F1dGgvcmVhbG1zL2RlbW8tcGVyZmVjdG9tb2JpbGUtY29tIiwiYXVkIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJzdWIiOiI2NDAwZjJjNS1hMTE1LTQ5ZDQtOGNlMy0yOGNjMDZiNzVkN2EiLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJub25jZSI6ImVkYjZlNzE3LWNhNjMtNDU4OS1iOWUzLWE4YTgyMTk1OGI2NyIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6ImQ0NzZjNTA2LTllNzYtNDQyMi1iMjE5LTQ0NTQzNDIzNDE4ZCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fX0.kFjPkNfbiot592lK5E43S_VqIyDmP-hKnKVbJAI6QSGoo8DgLVcG-9MUlokrdo90V6Zdqt60Lsa_h9fa97W9LgYFpSy7frcu3LKAl1otunfZz0YXSn1hxn-_jm71kaoMIlToTjeAULACCi7-nsoptYvb4l5i0Kf-jg4N3EVC5ZwyeBNpm9LsKMfOlxcp8Pz_b_hnNzb3sWijtphUthZfa-wwhR4tdZ0OLXG1gbBDk3d5Y52qk8qEnjobj5vI6kOwsSwUNkocP8A2Gy9J9ncQogitUcCZG9jh-eEUXs4tlYZn-DKetrTQpX5ycv-1DFI5gKV6gcibO-dn53d1VIMGyw");
+		//if(fast) { capabilities.setCapability("securityToken", "eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJiNTEzNDU1Zi1lMDY4LTQ3ZGEtYTZjZC1mYWUzMGYyMzA1MDYiLCJleHAiOjAsIm5iZiI6MCwiaWF0IjoxNTAyNjM3NTcwLCJpc3MiOiJodHRwczovL2F1dGgucGVyZmVjdG9tb2JpbGUuY29tL2F1dGgvcmVhbG1zL2RlbW8tcGVyZmVjdG9tb2JpbGUtY29tIiwiYXVkIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJzdWIiOiI5MWViOWViYy0wYWZiLTQ1N2QtYTFlYy1mODk1YWQ1ZWJiZTgiLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJzZXNzaW9uX3N0YXRlIjoiZGE0YjZiODQtN2Q2ZC00MzhkLWJiNWQtMGU3NmZhZWUzOTc1IiwiY2xpZW50X3Nlc3Npb24iOiJjNGEzYWM4Zi1hN2ZhLTQ3Y2QtOWJiMC00ZTFlYmQwN2QzYzYiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZXBvcnRpdW0iOnsicm9sZXMiOlsicmVwb3J0X2FkbWluIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50Iiwidmlldy1wcm9maWxlIl19fX0.tDZ7LAvtkkt1cB7TGk97hVrUY_Yegg40kcxpPEi7tHtvRKn86TGcm5q4YQvy6Co3qOiKFRbq8XJ8UG-JOS3kwUwijB9Z19-eAsdHKl5NJXhRPr3MKQaQznx4HH-6gVukvtWQ6CIqv9fZ7pMGX7rlmBIGaWX42Z5_Vpq8NYRJ2gOaCFnAPzsFcUMkFFrG8KfaGjn83W5rD2Z3NS6SZ9r2B5jzljo5KeK9MC6Mqb9zPSphIrreT3fFIV3bxRQF-UapLt5Z6OsXgkx91julkigBfT_MPqVwjzjSMYVFRS4nXRIbbAPaJK4r07R4qyOsnaOetwDC0aimKJjNvv2QxZ3mFg");}
+		//capabilities.setCapability("securityToken", "eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJmZGNiNDRjMS1hN2VhLTQwM2MtYmNhOS1jNmYyOWVlNjg4OTkiLCJleHAiOjAsIm5iZiI6MCwiaWF0IjoxNTAwOTIzNjI0LCJpc3MiOiJodHRwczovL2F1dGgucGVyZmVjdG9tb2JpbGUuY29tL2F1dGgvcmVhbG1zL2RlbW8tcGVyZmVjdG9tb2JpbGUtY29tIiwiYXVkIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJzdWIiOiJlM2I3ODM1ZS03M2Y1LTQwYzAtYWE4YS00ZWVmYzg5NjU4NTUiLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoib2ZmbGluZS10b2tlbi1nZW5lcmF0b3IiLCJzZXNzaW9uX3N0YXRlIjoiNTAyMGZjNGEtMzcxNi00ZDI3LTgxZTktYjcyN2U0MjJmYTY2IiwiY2xpZW50X3Nlc3Npb24iOiJjOGQxNGNlMi1iZTA1LTRmMDYtOTQyOS03NTNlMWNkMzYwNzMiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50Iiwidmlldy1wcm9maWxlIl19fX0.nt3aR7ZD1M21h32OWJUgI0Wc3cCZ9otJBRT24yiTTUpVNJlbgt9JxW-laCXVZYbaf3H4zTy8WdNAYIt8j26fBNH5UXPQRnIGqcSM_1cRPK_KYHRLJ_ELyZcX5B753MjOILRZeo44vkh5aOZl0nO_Afyij74sectzejnUFvf1vCpRzM_FEnWIo7TL8JsTO-1YfQ4R4VmPpU_tZUhT6sDlPTrwJ0v9b021cNIjpHtGeCXUT4Z-As0mfET1o6ITyWSIOQchWpJNDoKj-AAe9OyHSUfCNoM39dhSb4BEtWanj3ViYCkIgMXl0A73I1QmBC7FsboTf4yebkBWMaZkoe3SNw");        
 
-		}
+
 		capabilities.setCapability("newCommandTimeout", "30");
 		if (device) { capabilities.setCapability("windTunnelPersona", "Georgia"); }
 		//	if (device) { capabilities.setCapability("windTunnelPersona", "Ross"); }
 		
 		capabilities.setCapability("scriptName", "Boston Globe - " + targetEnvironment);
-		
+		capabilities.setCapability("outputVideo", true);
+		capabilities.setCapability("outputReport", true);
+
+		/*
+		String tunnelId;
+		tunnelId = System.getProperty("tunnelId");
+		if(tunnelId != null){
+			capabilities.setCapability("tunnelId",	tunnelId);
+		}
+		*/
+
 		long startTime; 
 		while(retry > 0 && driver == null) {
 			startTime = System.nanoTime();
@@ -225,20 +255,31 @@ public class TestHomeDeliverySignup {
 				
 			} catch (Exception e) {
 				retry--;
-				e.printStackTrace();
+				
 				System.out.println("Failed to aquire browser session: " + targetEnvironment + ". Retrying...");
 				sleep(retryInterval);
+				ex = e;
+	            StringWriter sw = new StringWriter();
+	            e.printStackTrace(new PrintWriter(sw));
+	            String exceptionAsString = sw.toString();
+	            System.out.println(exceptionAsString);
+	            throw e; 
 			}		
 		}
 		
 		OS = capabilities.getCapability("platformName").toString();
 		driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
-		driver.manage().window().maximize();
 		if(device) {startLogging();}
-	
-
 		
-		
+		/*
+		try{
+			System.out.println("Trying to get browser size");
+			System.out.println(targetEnvironment + " - " + driver.manage().window().getSize());
+		} catch (WebDriverException e) {
+			//reportiumClient.reportiumAssert("Get browser size", false);
+			System.out.println("Failed to get browser size for " + targetEnvironment);
+		}
+		*/
 		
 		return driver;
 	}
@@ -251,50 +292,100 @@ public class TestHomeDeliverySignup {
 
 	@Test
 	public void BostonGlobeTest() {
-		openHomepage();
-		enterZipCode();
-		selectLength();
-		enterDetails();
+	/*
+		driver.get("http://192.168.1.101:5000");
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		takeScreenshot();
+		driver.findElementByXPath("//*[@id='login_username']").sendKeys("patrick");
+		driver.findElementByXPath("//*[@id='login_passwd']").sendKeys("test");
+		driver.findElementByXPath("//*[@id='ext-gen40']").click();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		takeScreenshot();
+		
+		takeScreenshot();
+		*/
+		try{
+			openHomepage();
+			enterZipCode();
+			selectLength();
+			enterDetails();			
+		} catch (Exception e) {
+			ex = e;
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+            System.out.println(exceptionAsString);
+            throw e; 
+		}
+
+
+
+		
 	}
 
 	public void openHomepage() {
-		reportiumClient.testStep("Open Homepage");
+		reportiumClient.stepStart("Open Homepage");
 		//System.out.println("### Opening homepage ###");
 		driver.get(
 				"http://subscribe.bostonglobe.com/B0004/?rc=WW011964&globe_rc=WW011964&p1=BGHeader_HomeDeliverySubscription");
 		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='txtZip']")));
 		takeScreenshot();
-
+		reportiumClient.stepEnd("Open Homepage");
 
 
 	}
 
 	public void enterZipCode() {
-		reportiumClient.testStep("Enter Zip Code");
+		reportiumClient.stepStart("Enter Zip Code");
+
+		/*
+		Map<String, Object> params1 = new HashMap<>();
+		params1.put("content", "PRIVATE:script/Microsoft_Windows 10 Chrome 68 (1280x1024)_180824_132355.png");
+		params1.put("timeout", "20");
+		params1.put("threshold", "85");
+		Object result1 = driver.executeScript("mobile:checkpoint:image", params1);
+		*/
+
 		//System.out.println("### Entering zipcode ###");
 		driver.findElement(By.xpath("//input[@name='txtZip']")).clear();
-		driver.findElement(By.xpath("//input[@name='txtZip']")).sendKeys("02116");
+		driver.findElement(By.xpath("//input[@name='txtZip']")).sendKeys("01801");
+		//driver.findElement(By.xpath("//input[@name='txtZip']")).sendKeys("secured.eW1U4AHF/7fA0km7X2ty2w==");
+		
+		
 		driver.findElement(By.xpath("//input[@id='cmdSubmit']")).click();
 		takeScreenshot();
+		reportiumClient.stepEnd("Enter Zip Code");
 	}
 
 	public void selectLength() {
-		reportiumClient.testStep("Select Subscription Length");
+		reportiumClient.stepStart("Select Subscription Length");
 		//System.out.println("### Selecting subscription length ###");
 		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//label[1]/strong[1])[1]")));
 
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("$('input:radio[name=rdSubscription][value=4]').trigger('click');");
+		//JavascriptExecutor js = (JavascriptExecutor) driver;
+		//js.executeScript("$('input:radio[name=rdSubscription][value=4]').trigger('click');");
+		
+		driver.findElement(By.xpath("//ul[@id='available_offers_list']/li[1]")).click();
 		driver.findElement(By.xpath("//input[@id='continue_btn']")).click();
 		takeScreenshot();
 
-		
+		reportiumClient.stepEnd("Select Subscription Length");
 		
 		
 	}
 
 	public void enterDetails() {
-		reportiumClient.testStep("Enter Subscription Details");
+		reportiumClient.stepStart("Enter Subscription Details");
 		sleep(1000);
 		//System.out.println("### Entering subscription details ###");
 		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='txtDeliveryFirstName']")));
@@ -305,9 +396,9 @@ public class TestHomeDeliverySignup {
 		driver.findElement(By.xpath("//input[@id='txtDeliveryAreaCode']")).sendKeys("781");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryPhone3']")).sendKeys("847");
 		driver.findElement(By.xpath("//input[@id='txtDeliveryPhone4']")).sendKeys("4433");
-		driver.findElement(By.xpath("//input[@id='txtDeliveryEMail']")).sendKeys("tomerg@perfectomobile.com");
+		driver.findElement(By.xpath("//input[@id='txtDeliveryEMail']")).sendKeys("user@perfectomobile.com");
 		takeScreenshot();
-		
+		reportiumClient.stepEnd("Enter Subscription Details");
 	}
 
 	@BeforeClass(alwaysRun = true)
@@ -337,6 +428,11 @@ public class TestHomeDeliverySignup {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest(ITestResult testResult) {
+		if(ex != null){
+			testResult.setStatus(ITestResult.FAILURE);
+			testResult.setThrowable(ex);
+		}
+		
 		int status = testResult.getStatus();
 		
 		switch (status) {
@@ -366,11 +462,15 @@ public class TestHomeDeliverySignup {
 		
 		PerfectoExecutionContext perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
 				.withProject(new Project("Boston Globe", "1.0")) // Optional
+				.withJob(new Job("Allstate", 5))
 				.withContextTags("Build " + System.getProperty("BuildNumber"), "Software Version: 1.6", "Responsive Build Validation", "Tomer") // Optional
 				.withWebDriver(driver).build();
 
 		return new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
 	}
+
+
+
 
 	private static void sleep(long millis) {
 		try {
