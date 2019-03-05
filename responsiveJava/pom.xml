@@ -19,8 +19,8 @@
 	<repositories>
 		<repository>
 			<id>perfectomobile</id>
-			<name>Perfecto</name>
-			<url>http://repository-perfectomobile.forge.cloudbees.com/public</url>
+			<name>Perfecto mobile</name>
+			<url>https://repo1.perfectomobile.com/public/repositories/maven</url>
 		</repository>
 	</repositories>
 
