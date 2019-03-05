@@ -15,6 +15,8 @@
 
 		<allure.version>1.4.10</allure.version>
 		<aspectj.version>1.8.5</aspectj.version>
+		
+		<reportium-sdk.version>2.2.9</reportium-sdk.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -32,20 +34,29 @@
 		<dependency>
 			<groupId>com.perfecto.reporting-sdk</groupId>
 			<artifactId>reportium-java</artifactId>
-			<version>LATEST</version>
+			<version>${reportium-sdk.version}</version>
 		</dependency>
-
-		<!-- Reportium SDK addition for Allure users -->
 		<dependency>
 			<groupId>com.perfecto.reporting-sdk</groupId>
-			<artifactId>reportium-java-annotations</artifactId>
-			<version>LATEST</version>
+			<artifactId>reportium-import-java</artifactId>
+			<version>${reportium-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.perfecto.reporting-sdk</groupId>
+			<artifactId>reportium-import-selenium</artifactId>
+			<version>${reportium-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.perfecto.reporting-sdk</groupId>
+			<artifactId>reportium-allure-integration</artifactId>
+			<version>1.1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.perfecto.reporting-sdk</groupId>
+			<artifactId>reportium-testng</artifactId>
+			<version>${reportium-sdk.version}</version>
 		</dependency>
 
-		<!--Allure TestNG <dependency> <groupId>ru.yandex.qatools.allure</groupId> 
-			<artifactId>allure-testng-adaptor</artifactId> <version>${allure.version}</version> 
-			<exclusions> <exclusion> <groupId>junit</groupId> <artifactId>junit</artifactId> 
-			</exclusion> </exclusions> </dependency> -->
 		<!--Matchers -->
 		<dependency>
 			<groupId>org.hamcrest</groupId>
