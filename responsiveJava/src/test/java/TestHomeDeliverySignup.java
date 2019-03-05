@@ -455,7 +455,7 @@ public class TestHomeDeliverySignup {
 		PerfectoExecutionContext perfectoExecutionContext = new PerfectoExecutionContext.PerfectoExecutionContextBuilder()
 				.withCustomFields(new CustomField("perfecto.vcs.repositoryUrl", "https://github.com/perfectomobilepresales/responsiveJava"))
 				.withProject(new Project("Boston Globe", "1.0")) // Optional
-				.withContextTags("Build " + System.getProperty("BuildNumber"), "Software Version: 1.6", "Responsive Build Validation", "patrickm", System.getProperty("tunnelId")) // Optional
+				.withContextTags("Build " + System.getProperty("BuildNumber"), "Software Version: 1.6", "Responsive Build Validation", "Tomer", System.getProperty("tunnelId")) // Optional
 				.withWebDriver(driver).build();
 
 		return new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
